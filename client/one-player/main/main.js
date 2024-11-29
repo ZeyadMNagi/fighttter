@@ -188,7 +188,7 @@ spawnEnemies();
 let gameOver = false;
 let score = 0;
 
-let lastAttackTime = 0;
+let lastAttackTimes = new Map();
 const attackDelay = 1000; // 1 second
 
 function animate() {
@@ -209,11 +209,7 @@ function animate() {
     enemy.update();
   });
   player.velocity.x = 0;
-  console.log(player.position.x);
-  console.log(player)
-  console.log(enemies)
-  console.log(localStorage)
-  
+
   enemies.forEach((enemy) => {
     if (enemy.position.x > player.position.x && !player.dead) {
       enemy.position.x -= 2.5;
@@ -307,10 +303,15 @@ function animate() {
       player.isattacking &&
       player.framecurrent === 3
     ) {
-      enemy.takehit();
+      enemy.takehit(); // Reduce enemy health
       player.isattacking = false;
       score += 50;
       scoreEl.innerHTML = score;
+
+      // Immediately update the enemy health bar *here*
+      gsap.to(enemy.healthDivId, {
+        width: (100 * enemy.health) / enemy.no + "%",
+      });
     }
 
     if (
@@ -319,25 +320,30 @@ function animate() {
         rectangle2: player,
       })
     ) {
-      enemy.isattacking = false;
-      const currentTime = Date.now();
+      const currentTime = performance.now();
+      const lastAttackTime = lastAttackTimes.get(enemy) || 0;
       if (currentTime - lastAttackTime >= attackDelay) {
         player.takehit();
-
         gsap.to("#ol-heal", {
           width: (100 * player.health) / player.no + "%",
         });
         enemy.attack1();
-        lastAttackTime = currentTime;
+        lastAttackTimes.set(enemy, currentTime); // Update last attack time
       }
+      enemy.isattacking = false;
     }
+
     if (enemy.health <= 0) {
-      const enemyIndex = enemies.findIndex((enemyH) => {
-        return enemy === enemyH;
-      });
-      setTimeout(() => {
-        if (enemyIndex > -1) enemies.splice(enemyIndex, 1);
-      }, 500);
+      const enemyIndex = enemies.findIndex((enemyH) => enemy === enemyH);
+      if (enemyIndex !== -1) {
+        enemies.splice(enemyIndex, 1);
+        score += 50; 
+        scoreEl.innerHTML = score; 
+        const healthBar = document.querySelector(enemy.healthDivId);
+        if (healthBar) {
+          healthBar.remove();
+        }
+      }
     }
 
     if (enemy.health <= 0 || player.health <= 0) {
@@ -351,18 +357,14 @@ function animate() {
       enemy.switchsprite("death");
     }
   });
-
   if (player.health <= 0 && !gameOver) {
+    // Check for player death
     gameOver = true;
-    showGameOverPopup(score);
-  }
-
-  if (!gameOver) {
-    requestAnimationFrame(animate);
+    showGameOverPopup(score); // Call the function to display the popup
   }
 }
 
-// animate();
+animate();
 
 function showGameOverPopup(finalScore) {
   const popup = document.createElement("div");
