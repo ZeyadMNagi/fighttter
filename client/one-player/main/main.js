@@ -191,6 +191,9 @@ let score = 0;
 let lastAttackTimes = new Map();
 const attackDelay = 1000; // 1 second
 
+const enemies = [];
+
+
 function animate() {
   window.requestAnimationFrame(animate);
   C.clearRect(0, 0, canvas.width, canvas.height);

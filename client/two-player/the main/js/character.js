@@ -1678,3 +1678,38 @@ const background_6 = new Background({
   },
   scale: 1,
 });
+
+const Characters = [
+  wizard_1,
+  wizard_2,
+  warrior_1,
+  warrior_2,
+  samurai_1,
+  samurai_2,
+  king_1,
+  king_2,
+  evil_1,
+  evil_2,
+  fire_wizard_1,
+  fire_wizard_2,
+  goblin_1,
+  goblin_2,
+  skeleton_1,
+  skeleton_2,
+  hunter_1,
+  hunter_2,
+  purple_1,
+  purple_2,
+  el_crystal_1,
+  el_crystal_2,
+  el_wind_1,
+  el_wind_2,
+];
+const backgrounds = [
+  background_1,
+  background_2,
+  background_3,
+  background_4,
+  background_5,
+  background_6,
+];
