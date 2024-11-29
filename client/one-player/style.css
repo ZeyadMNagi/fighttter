@@ -4,22 +4,6 @@
   font-family: "Press Start 2P", Arial;
 }
 
-/* width */
-::-webkit-scrollbar {
-  width: 12px;
-}
-
-/* Handle */
-::-webkit-scrollbar-thumb {
-  background: #888;
-  border-radius: 8px;
-}
-
-/* Handle on hover */
-::-webkit-scrollbar-thumb:hover {
-  background: #555;
-}
-
 body {
   background: #233;
 }
@@ -52,7 +36,6 @@ tr {
 .table {
   align-items: center;
   justify-content: center;
-  /* display: flex; */
   padding: auto;
 }
 
@@ -64,6 +47,18 @@ img {
   width: 200px;
   height: 200px;
   object-fit: cover;
+}
+
+.images {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.images img {
+  margin: 7px;
+  border-radius: 12px;
 }
 
 .images img:hover,
@@ -164,4 +159,25 @@ button:hover {
   color: #966f05ce;
   background: #ebebeb;
   padding: 10px;
+}
+
+#game-over-popup {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: rgba(0, 0, 0, 0.8); 
+  padding: 20px;
+  color: white;
+  text-align: center;
+  z-index: 1000; 
+}
+
+#game-over-popup button {
+  margin-top: 10px;
+  padding: 8px 16px;
+  background-color: #4caf50;
+  color: white;
+  border: none;
+  cursor: pointer;
 }

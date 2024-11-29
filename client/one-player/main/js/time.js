@@ -22,6 +22,6 @@ function decrease() {
     document.querySelector("#timer").innerHTML = time;
   }
   if (time === 0) {
-    // canPress = false;
+    canPress = false;
   }
 }

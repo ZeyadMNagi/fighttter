@@ -45,6 +45,12 @@ var choose_background = (element) => {
     localStorage.setItem("background", JSON.stringify(background_2));
   } else if (background_id === "img3") {
     localStorage.setItem("background", JSON.stringify(background_3));
+  } else if (background_id === "img4") {
+    localStorage.setItem("background", JSON.stringify(background_4));
+  } else if (background_id === "img5") {
+    localStorage.setItem("background", JSON.stringify(background_5));
+  } else if (background_id === "img6") {
+    localStorage.setItem("background", JSON.stringify(background_6));
   }
 
   choose_background = 0;

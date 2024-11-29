@@ -192,6 +192,9 @@
       var found;
       var char;
       var EP;
+      let player1Ready = false;
+      let player2Ready = false;
+      let gameStarted = false;
 
       // Function to handle character selection
       function choosePlayer(element) {
@@ -262,8 +265,54 @@
           document.getElementById("loading").style.display = "block";
           me.disabled = true;
         }
+
+        socket.emit("find", { name: name, character: character }); // Keep the same
+
+        // Add a listener for the 'matched' event (server should emit this)
+        socket.on("matched", (data) => {
+          document.getElementById("loading").style.display = "none"; // Hide loading
+          me.disabled = false; // Re-enable button if needed
+          console.log("Matched with:", data); // Log the data
+
+          // Determine player roles (you might do this on the server instead)
+          if (data.player1.name === name) {
+            player = character;
+            enemy = data.player2.character;
+            oppName = data.player2.name;
+            mo = data.player1; // Not sure what 'mo' is but keeping it
+            EP = data.player1.amI; // Same here
+            player1Ready = true; // Mark player 1 as ready
+            socket.emit("playerReady", { player: 1 }); // Tell server p1 is ready
+          } else {
+            player = data.player1.character;
+            enemy = character;
+            oppName = data.player1.name;
+            mo = data.player2;
+            EP = data.player2.amI;
+            player2Ready = true;
+            socket.emit("playerReady", { player: 2 }); // Tell server p2 is ready
+          }
+
+          // Check if both players are ready (only then start the game)
+          startGameIfReady();
+        });
       }
 
+      // Function to start the game ONLY when both players are ready
+      function startGameIfReady() {
+        if (player1Ready && player2Ready && !gameStarted) {
+          gameStarted = true;
+          start(); // Call your existing start() function
+          determineWinner({
+            /* Pass needed data */
+          }); // Same here
+          decrease(); // Same here
+        }
+      }
+
+      socket.on("bothPlayersReady", () => {
+        startGameIfReady();
+      });
       // Socket event listener for "s" event
       socket.on("s", (e) => {
         // Extract all players array from the event

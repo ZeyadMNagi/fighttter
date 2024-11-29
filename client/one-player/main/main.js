@@ -170,7 +170,6 @@ const player = new Fighter({
   },
 });
 
-
 const keys = {
   ArrowRight: {
     pressed: false,
@@ -186,6 +185,7 @@ const keys = {
 decrease();
 spawnEnemies();
 
+let gameOver = false;
 let score = 0;
 
 let lastAttackTime = 0;
@@ -209,7 +209,11 @@ function animate() {
     enemy.update();
   });
   player.velocity.x = 0;
-
+  console.log(player.position.x);
+  console.log(player)
+  console.log(enemies)
+  console.log(localStorage)
+  
   enemies.forEach((enemy) => {
     if (enemy.position.x > player.position.x && !player.dead) {
       enemy.position.x -= 2.5;
@@ -323,9 +327,7 @@ function animate() {
         gsap.to("#ol-heal", {
           width: (100 * player.health) / player.no + "%",
         });
-
         enemy.attack1();
-
         lastAttackTime = currentTime;
       }
     }
@@ -349,6 +351,37 @@ function animate() {
       enemy.switchsprite("death");
     }
   });
+
+  if (player.health <= 0 && !gameOver) {
+    gameOver = true;
+    showGameOverPopup(score);
+  }
+
+  if (!gameOver) {
+    requestAnimationFrame(animate);
+  }
 }
 
-animate();
+// animate();
+
+function showGameOverPopup(finalScore) {
+  const popup = document.createElement("div");
+  popup.id = "game-over-popup";
+  popup.innerHTML = `
+    <h2>Game Over</h2>
+    <p>Your Score: ${finalScore}</p>
+    <button onclick="playAgain()">Play Again</button>
+    <button onclick="chooseNewCharacter()">Choose New Character</button>
+  `;
+
+  // Append the popup to the container
+  document.querySelector(".container").appendChild(popup);
+}
+
+function playAgain() {
+  location.reload();
+}
+
+function chooseNewCharacter() {
+  window.location.href = "../choose.html";
+}

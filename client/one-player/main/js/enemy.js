@@ -25,7 +25,7 @@ var difficulty = localStorage.getItem("difficulty");
 if (difficulty === "dN") {
   t = 7000;
 } else if (difficulty === "dH") {
-  t = 5000;
+  t = 3000;
 } else {
   t = 10000;
 }

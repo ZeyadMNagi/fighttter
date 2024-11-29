@@ -4,22 +4,6 @@
   font-family: "Press Start 2P", Arial;
 }
 
-/* width */
-::-webkit-scrollbar {
-  width: 12px;
-}
-
-/* Handle */
-::-webkit-scrollbar-thumb {
-  background: #888;
-  border-radius: 8px;
-}
-
-/* Handle on hover */
-::-webkit-scrollbar-thumb:hover {
-  background: #555;
-}
-
 body {
   background: #233;
 }
@@ -44,6 +28,7 @@ body {
   align-items: center;
   justify-content: center;
   text-align: center;
+  margin-top: 1%;
 }
 
 h1 {
@@ -55,15 +40,13 @@ h1 {
 .modes {
   display: flex;
   flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
 }
 
 a {
   padding: 20px;
-  width: 50%;
-}
-
-img:hover {
-  border: 5px solid #fff;
+  width: 100%;
 }
 
 img {
@@ -79,9 +62,14 @@ img {
   justify-content: center;
   align-items: center;
   text-align: center;
-
   padding: 10px;
-  width: 100%;
+  width: 50%;
+  transition: 0.4s;
+  cursor: pointer;
+  &:hover{
+    transform: scale(1.05);
+
+  }
 }
 
 label {
